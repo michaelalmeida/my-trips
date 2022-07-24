@@ -3,11 +3,20 @@ import { useApiClient } from '../../api/useApiClient';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { MapWrapper } from './Map.style';
 import { ITripsSummary } from '../../api/myTrips/MyTrips.types';
+import { PinIcon } from '../../assets/Icons';
+import L from 'leaflet';
 
 export const Map = () => {
     const MAP_ZOOM = 3;
     const MAP_SCROLL = true;
     const { data } = useApiClient({ query: GET_TRIPS_SUMMARY });
+
+    const PintIconMarker = L.icon({
+        iconUrl: PinIcon,
+        iconSize: [40, 40],
+        iconAnchor: [12, 12],
+        popupAnchor: [0, 0],
+    });
 
     return (
         <MapWrapper>
@@ -20,7 +29,8 @@ export const Map = () => {
                     data.myTrips.map((trip: ITripsSummary) => (
                         <Marker
                             position={[trip.latlong.latitude, trip.latlong.longitude]}
-                            key={trip.id}>
+                            key={trip.id}
+                            icon={PintIconMarker}>
                             <Popup>{trip.title}</Popup>
                         </Marker>
                     ))}
