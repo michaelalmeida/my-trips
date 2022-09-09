@@ -1,12 +1,12 @@
 import { ApolloProvider } from '@apollo/client';
 import { client } from './api';
-import { Map } from './Pages/Map';
+import { Home } from './Pages/Home';
 
 function App() {
     return (
         <ApolloProvider client={client}>
             <div>
-                <Map />
+                <Home />
             </div>
         </ApolloProvider>
     );
