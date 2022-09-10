@@ -7,7 +7,7 @@ import { PinIcon } from '../../assets/Icons';
 import L from 'leaflet';
 
 interface IMapProps {
-    isDarkTheme: boolean;
+    isDarkTheme?: boolean;
 }
 
 export const Map = ({ isDarkTheme }: IMapProps) => {

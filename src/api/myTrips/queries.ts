@@ -14,9 +14,8 @@ export const GET_TRIPS_SUMMARY = gql`
 `;
 
 export const GET_TRIP = gql`
-    {
-        myTrips {
-            id
+    query getTripDetails($id: ID!) {
+        myTrip(where: { id: $id }) {
             latlong {
                 longitude
                 latitude
