@@ -1,35 +1,31 @@
 import { GET_TRIPS_SUMMARY } from '../../api/myTrips/queries';
 import { useApiClient } from '../../api/useApiClient';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { MapWrapper } from './Map.style';
 import { ITripsSummary } from '../../api/myTrips/MyTrips.types';
 import { PinIcon } from '../../assets/Icons';
 import L from 'leaflet';
+import { useNavigate } from 'react-router-dom';
 
-interface IMapProps {
-    isDarkTheme?: boolean;
-}
-
-export const Map = ({ isDarkTheme }: IMapProps) => {
+export const Map = () => {
     const MAP_ZOOM = 3;
     const MAP_SCROLL = true;
     const { data } = useApiClient({ query: GET_TRIPS_SUMMARY });
+    const navigate = useNavigate();
 
     const PintIconMarker = L.icon({
         iconUrl: PinIcon,
-        iconSize: [40, 40],
-        iconAnchor: [0, 40],
+        iconSize: [45, 45],
+        iconAnchor: [25, 45],
         popupAnchor: [0, 0],
     });
 
     const themingMap = {
-        url: isDarkTheme
-            ? 'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}'
-            : 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
-        attribution: isDarkTheme
-            ? '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            : 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+        url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
+        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
     };
+
+    const onMarketClickHandler = (id: string) => navigate(`trip/${id}`, { replace: false });
 
     return (
         <MapWrapper>
@@ -40,9 +36,12 @@ export const Map = ({ isDarkTheme }: IMapProps) => {
                         <Marker
                             position={[trip.latlong.latitude, trip.latlong.longitude]}
                             key={trip.id}
-                            icon={PintIconMarker}>
-                            <Popup>{trip.title}</Popup>
-                        </Marker>
+                            icon={PintIconMarker}
+                            eventHandlers={{
+                                click: () => {
+                                    onMarketClickHandler(trip.id);
+                                },
+                            }}></Marker>
                     ))}
             </MapContainer>
         </MapWrapper>

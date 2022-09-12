@@ -6,13 +6,17 @@ export const Wrapper = styled.div`
     flex-direction: column;
     width: 800px;
     background: #f5f5f5;
+    box-sizing: border-box;
+
+    @media screen and (max-width: 800px) {
+        width: 100%;
+        margin: 0;
+        padding: 80px;
+    }
 `;
 
 export const Toolbar = styled.div`
-    padding: 20px;
     text-align: right;
-    border-radius: 10px;
-    background: #fff;
 `;
 
 export const Title = styled.h1`
