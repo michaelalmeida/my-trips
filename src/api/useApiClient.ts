@@ -6,11 +6,12 @@ interface UseApiClientProps {
 }
 
 export const useApiClient = ({ query, variables }: UseApiClientProps) => {
-    const { loading, error, data } = useQuery(query, { variables });
+    const { loading, error, data, refetch } = useQuery(query, { variables });
 
     return {
         isLoading: loading,
         error,
         data,
+        refetch,
     };
 };

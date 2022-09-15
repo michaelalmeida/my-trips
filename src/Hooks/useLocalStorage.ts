@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-interface IUseLocalStorageProps {
+interface IUseLocalStorageProps<T> {
     key: string;
-    defaultValue: boolean;
+    defaultValue: T;
 }
 
-const useLocalStorage = ({ key, defaultValue }: IUseLocalStorageProps) => {
+const useLocalStorage = <T>({ key, defaultValue }: IUseLocalStorageProps<T>) => {
     const [value, setValue] = useState(() => {
-        let currentValue;
+        let currentValue: T;
 
         try {
             currentValue = JSON.parse(localStorage.getItem(key) || String(defaultValue));
@@ -22,7 +22,7 @@ const useLocalStorage = ({ key, defaultValue }: IUseLocalStorageProps) => {
         localStorage.setItem(key, JSON.stringify(value));
     }, [value, key]);
 
-    return [value, setValue];
+    return { value, setValue };
 };
 
 export default useLocalStorage;

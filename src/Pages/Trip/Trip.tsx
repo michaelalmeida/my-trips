@@ -3,18 +3,46 @@ import { useParams } from 'react-router-dom';
 import { Title, Wrapper, Article, Toolbar } from './Trip.style';
 import { useApiClient } from '../../api/useApiClient';
 import { GET_TRIP } from '../../api/myTrips/queries';
+import { useNavigate } from 'react-router-dom';
+import useLocalStorage from '../../Hooks/useLocalStorage';
+import { LANGUAGE } from '../../Constants/language';
+import { translation } from '../../locale';
 
 export const Trip = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { value, setValue } = useLocalStorage<string>({
+        key: 'language',
+        defaultValue: LANGUAGE.en,
+    });
 
-    const { data, isLoading } = useApiClient({ query: GET_TRIP, variables: { id: id || '' } });
+    const { data, isLoading } = useApiClient({
+        query: GET_TRIP,
+        variables: { id: id || '', locale: value },
+    });
 
     if (isLoading) return <p>Loading</p>;
+
+    const isLanguageSelectedEnglish = value === LANGUAGE.en;
 
     return (
         <Wrapper>
             <Toolbar>
-                Trocar para <a href="test">Português</a>
+                <button
+                    onClick={() => {
+                        navigate(-1);
+                    }}>
+                    {translation[+isLanguageSelectedEnglish].back}
+                </button>
+                <span>
+                    <a
+                        href="#"
+                        onClick={() => {
+                            setValue(isLanguageSelectedEnglish ? LANGUAGE.pt : LANGUAGE.en);
+                        }}>
+                        {translation[+isLanguageSelectedEnglish].switchLanguage}
+                    </a>
+                </span>
             </Toolbar>
             <Title>{data.myTrip.title}</Title>
             <Article dangerouslySetInnerHTML={{ __html: data.myTrip.content.html }} />
