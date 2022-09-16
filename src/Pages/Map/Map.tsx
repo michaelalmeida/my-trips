@@ -21,7 +21,7 @@ export const Map = () => {
     });
 
     const themingMap = {
-        url: 'https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png',
+        url: `https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${process.env.STADIA}`,
         attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
     };
 
