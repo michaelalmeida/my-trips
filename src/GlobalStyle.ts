@@ -1,11 +1,11 @@
 import { createGlobalStyle } from 'styled-components';
-import { BLACK, MAIN_COLOR } from './Constants/colors';
+import { BLACK, MAIN_COLOR, WHITE } from './Constants/colors';
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
     color: ${BLACK};
-    background: #f5f5f5;
+    background: ${WHITE};
     font-family: 'Inter', sans-serif;
   }
 
