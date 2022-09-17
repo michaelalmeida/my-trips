@@ -6,18 +6,16 @@ import { GET_TRIP } from '../../api/myTrips/queries';
 import { useNavigate } from 'react-router-dom';
 import useLocalStorage from '../../Hooks/useLocalStorage';
 import { LANGUAGE } from '../../Constants/language';
-import { translation } from '../../locale';
+import { ITranslation, translation } from '../../locale';
 import { Loading } from '../../Components/Loading';
 
 export const Trip = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { value: languageSelected, setValue } = useLocalStorage<string>({
+    const { value: languageSelected, setValue: setLanguageSelected } = useLocalStorage<string>({
         key: 'language',
         defaultValue: LANGUAGE.en,
     });
-
-    const isLanguageSelectedEnglish = languageSelected === LANGUAGE.en;
 
     const { data, isLoading } = useApiClient({
         query: GET_TRIP,
@@ -26,6 +24,12 @@ export const Trip = () => {
 
     if (isLoading) return <Loading />;
 
+    const handleChangeLanguage = () => {
+        const languageToSwitch = languageSelected === LANGUAGE.en ? LANGUAGE.pt_BR : LANGUAGE.en;
+
+        setLanguageSelected(LANGUAGE[languageToSwitch as keyof ITranslation]);
+    };
+
     return (
         <Wrapper>
             <Toolbar>
@@ -33,15 +37,11 @@ export const Trip = () => {
                     onClick={() => {
                         navigate('/');
                     }}>
-                    {translation[+isLanguageSelectedEnglish].back}
+                    {translation[languageSelected as keyof ITranslation].back}
                 </button>
                 <span>
-                    <a
-                        href="#"
-                        onClick={() => {
-                            setValue(isLanguageSelectedEnglish ? LANGUAGE.pt : LANGUAGE.en);
-                        }}>
-                        {translation[+isLanguageSelectedEnglish].switchLanguage}
+                    <a href="#" onClick={handleChangeLanguage}>
+                        {translation[languageSelected as keyof ITranslation].switchLanguage}
                     </a>
                 </span>
             </Toolbar>
