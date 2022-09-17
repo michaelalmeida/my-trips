@@ -2,7 +2,7 @@ import { useQuery, DocumentNode } from '@apollo/client';
 
 interface UseApiClientProps {
     query: DocumentNode;
-    variables?: { [key: string]: string };
+    variables?: { [key: string]: string | string[] };
 }
 
 export const useApiClient = ({ query, variables }: UseApiClientProps) => {

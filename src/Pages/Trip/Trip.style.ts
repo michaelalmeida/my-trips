@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { WHITE } from '../../Constants/colors';
 
 export const Wrapper = styled.div`
     display: flex;
@@ -16,7 +17,11 @@ export const Wrapper = styled.div`
 
 export const Toolbar = styled.div`
     display: flex;
-    margin-top: 80px;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    background: ${WHITE};
+    align-items: center;
 
     span {
         flex-grow: 1;
@@ -24,7 +29,7 @@ export const Toolbar = styled.div`
     }
 
     @media screen and (max-width: 800px) {
-        margin: 20px;
+        padding: 20px;
     }
 `;
 

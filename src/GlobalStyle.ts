@@ -1,6 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 import { BLACK, MAIN_COLOR, WHITE } from './Constants/colors';
 const GlobalStyle = createGlobalStyle`
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
   body {
     margin: 0;
     padding: 0;
