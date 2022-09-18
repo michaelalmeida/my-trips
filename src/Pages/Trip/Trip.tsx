@@ -1,37 +1,25 @@
-import { useParams } from 'react-router-dom';
-
 import { Title, Wrapper, Article, Toolbar } from './Trip.style';
-import { useApiClient } from '../../api/useApiClient';
-import { GET_TRIP } from '../../api/myTrips/queries';
 import { useNavigate } from 'react-router-dom';
-import useLocalStorage from '../../Hooks/useLocalStorage';
-import { LANGUAGE } from '../../Constants/language';
+
 import { ITranslation, translation } from '../../locale';
 import { Loading } from '../../Components/Loading';
+import { useEffect } from 'react';
+import { useTrip } from './useTrip';
+import { PAGE_TITLE } from '../../Constants/title';
 
 export const Trip = () => {
-    const { id } = useParams();
     const navigate = useNavigate();
-    const { value: languageSelected, setValue: setLanguageSelected } = useLocalStorage<string>({
-        key: 'language',
-        defaultValue: LANGUAGE.pt_BR,
-    });
-    const { data, isLoading } = useApiClient({
-        query: GET_TRIP,
-        variables: { id: id || '', locale: [languageSelected] },
-    });
+    const { languageSelected, data, isLoading, handleChangeLanguage } = useTrip();
 
-    const handleChangeLanguage = () => {
-        const languageToSwitch = languageSelected === LANGUAGE.en ? LANGUAGE.pt_BR : LANGUAGE.en;
+    useEffect(() => {
+        document.title = data?.myTrip?.title || PAGE_TITLE;
 
-        setLanguageSelected(LANGUAGE[languageToSwitch as keyof ITranslation]);
-    };
+        return () => {
+            document.title = PAGE_TITLE;
+        };
+    }, [data]);
 
     if (isLoading) return <Loading />;
-
-    if (data.myTrip.title) {
-        document.title = data?.myTrip?.title || 'My trips';
-    }
 
     return (
         <Wrapper>
