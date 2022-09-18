@@ -8,14 +8,13 @@ import useLocalStorage from '../../Hooks/useLocalStorage';
 import { LANGUAGE } from '../../Constants/language';
 import { ITranslation, translation } from '../../locale';
 import { Loading } from '../../Components/Loading';
-import { useEffect } from 'react';
 
 export const Trip = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { value: languageSelected, setValue: setLanguageSelected } = useLocalStorage<string>({
         key: 'language',
-        defaultValue: LANGUAGE.en,
+        defaultValue: LANGUAGE.pt_BR,
     });
     const { data, isLoading } = useApiClient({
         query: GET_TRIP,
@@ -30,7 +29,7 @@ export const Trip = () => {
 
     if (isLoading) return <Loading />;
 
-    if (data.myTrip.title.whagtas) {
+    if (data.myTrip.title) {
         document.title = data?.myTrip?.title || 'My trips';
     }
 
