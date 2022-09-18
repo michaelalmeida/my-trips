@@ -52,6 +52,7 @@ export const Article = styled.article`
     }
 
     p {
+        line-height: 28px;
         @media screen and (max-width: 800px) {
             margin: 20px;
         }

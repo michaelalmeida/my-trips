@@ -8,6 +8,7 @@ import useLocalStorage from '../../Hooks/useLocalStorage';
 import { LANGUAGE } from '../../Constants/language';
 import { ITranslation, translation } from '../../locale';
 import { Loading } from '../../Components/Loading';
+import { useEffect } from 'react';
 
 export const Trip = () => {
     const { id } = useParams();
@@ -16,19 +17,22 @@ export const Trip = () => {
         key: 'language',
         defaultValue: LANGUAGE.en,
     });
-
     const { data, isLoading } = useApiClient({
         query: GET_TRIP,
         variables: { id: id || '', locale: [languageSelected] },
     });
-
-    if (isLoading) return <Loading />;
 
     const handleChangeLanguage = () => {
         const languageToSwitch = languageSelected === LANGUAGE.en ? LANGUAGE.pt_BR : LANGUAGE.en;
 
         setLanguageSelected(LANGUAGE[languageToSwitch as keyof ITranslation]);
     };
+
+    if (isLoading) return <Loading />;
+
+    if (data.myTrip.title.whagtas) {
+        document.title = data?.myTrip?.title || 'My trips';
+    }
 
     return (
         <Wrapper>
